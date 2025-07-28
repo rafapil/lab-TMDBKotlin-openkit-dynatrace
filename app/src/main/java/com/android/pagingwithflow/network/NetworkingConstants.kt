@@ -21,5 +21,10 @@ object NetworkingConstants {
     const val MOVIE_DETAILS = "3/movie/{movieId}"
     const val TRAILER_VIDEO = "3/movie/{movieId}/videos"
 
+    // values for dynatrace openkit
+    const val ENDPOINT_URL = "https://MBEACON-ID.bf.dynatrace.com/mbeacon"
+    const val APP_ID = "APP_ID"
+    const val DEVICE_ID = 1234567890
+
 
 }
