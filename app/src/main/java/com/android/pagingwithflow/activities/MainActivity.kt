@@ -16,6 +16,8 @@ import com.android.pagingwithflow.adapter.GenreAdapter
 import com.android.pagingwithflow.adapter.MovieSliderAdapter
 import com.android.pagingwithflow.adapter.PopularMovieAdapter
 import com.android.pagingwithflow.databinding.ActivityMainBinding
+import com.android.pagingwithflow.integration.dynatrace.DynatraceOpenKitManager
+
 import com.android.pagingwithflow.repo.DiscoverMoveViewModel
 import com.android.pagingwithflow.repo.MovieViewModel
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
@@ -44,6 +46,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -157,7 +160,6 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
-
 
 }
 

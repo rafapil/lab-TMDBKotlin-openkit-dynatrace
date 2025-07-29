@@ -21,21 +21,27 @@ android {
 
     signingConfigs {
         create("release") {
-
-            storeFile = file("caminho/para/sua/keystore.jks")
-            storePassword = System.getenv("KEYSTORE_PASSWORD")
-            keyAlias = System.getenv("KEY_ALIAS")
-            keyPassword = System.getenv("KEY_PASSWORD")
+            if (project.hasProperty('MY_RELEASE_STORE_FILE')) {
+                storeFile = file(MY_RELEASE_STORE_FILE)
+                storePassword = MY_RELEASE_STORE_PASSWORD
+                keyAlias = MY_RELEASE_KEY_ALIAS
+                keyPassword = MY_RELEASE_KEY_PASSWORD
+            }
         }
     }
 
     buildTypes {
-        release {
-//            minifyEnabled false
-            isMinifyEnabled = true
-            isShrinkingEnabled = true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        getByName("release") {
+            minifyEnabled = true
+            shrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("release")
         }
+        getByName("debug") {
+            applicationIdSuffix = ".debug"
+            debuggable = true
+        }
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17

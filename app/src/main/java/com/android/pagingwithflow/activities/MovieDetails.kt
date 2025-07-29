@@ -2,27 +2,23 @@ package com.android.pagingwithflow.activities
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
-import com.android.pagingwithflow.R
 import com.android.pagingwithflow.Utlis.ProgressBarHandler
-import com.android.pagingwithflow.adapter.DiscoverMovieAdapter
-import com.android.pagingwithflow.adapter.LoaderStateAdapter
 import com.android.pagingwithflow.adapter.TrailerAdapter
-import com.android.pagingwithflow.databinding.ActivityDiscoverAllMovieBinding
 import com.android.pagingwithflow.databinding.ActivityMovieDetailsBinding
+import com.android.pagingwithflow.integration.dynatrace.DynatraceOpenKitManager
 import com.android.pagingwithflow.network.NetworkingConstants
-import com.android.pagingwithflow.repo.DiscoverMoveViewModel
 import com.android.pagingwithflow.repo.MovieViewModel
+import com.dynatrace.openkit.util.json.objects.JSONNumberValue
+import com.dynatrace.openkit.util.json.objects.JSONStringValue
+import com.dynatrace.openkit.util.json.objects.JSONValue
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MovieDetails : AppCompatActivity() {
@@ -36,20 +32,65 @@ class MovieDetails : AppCompatActivity() {
         binding = ActivityMovieDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initProgress();
-        initApiCalls();
+        DynatraceOpenKitManager.enterAction("Ver Detalhes do Filme")
 
+        initProgress()
+        initApiCalls()
 
+        binding.testCrashBtn.setOnClickListener {
+
+            try {
+                DynatraceOpenKitManager.enterAction("Teste de Crash")
+                DynatraceOpenKitManager.reportEvent("Botão de crash (Detalhes) clicado")
+
+                throw RuntimeException("Teste de Crash Manual - Debug")
+
+            } catch (e: Exception) {
+                val errorName = e.javaClass.simpleName
+                val reason =
+                    e.message ?: "Causa desconhecida"
+                val stacktrace =
+                    android.util.Log.getStackTraceString(e)
+
+                DynatraceOpenKitManager.reportError(errorName, e)
+                DynatraceOpenKitManager.reportCrash(errorName, reason, stacktrace)
+
+                throw e
+            }
+
+        }
+
+        binding.sendEventBtn.setOnClickListener {
+            android.widget.Toast.makeText(this, "Evento de teste enviado!", android.widget.Toast.LENGTH_SHORT).show()
+            val attributes: MutableMap<String?, JSONValue?> = HashMap<String?, JSONValue?>()
+            attributes.put("event.name", JSONStringValue.fromString("Send Event BE"))
+            attributes.put("screen", JSONStringValue.fromString("detail movie"))
+            attributes.put("product", JSONStringValue.fromString("movie"))
+            attributes.put("amount", JSONNumberValue.fromDouble(358.35))
+            attributes.put("currency", JSONStringValue.fromString("USD"))
+            attributes.put("reviewScore", JSONNumberValue.fromDouble(4.8))
+
+            DynatraceOpenKitManager.sendBusEvent("com.movie-app.funnel.detail-movie", attributes)
+        }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        DynatraceOpenKitManager.leaveAction()
     }
 
     private fun initApiCalls() {
         movieId = intent.getStringExtra("MovieIdPass").toString()
+
+        DynatraceOpenKitManager.reportEvent("Movie ID: $movieId")
+
         mainViewModel.getMovieDetails(movieId!!)
         mainViewModel.getTrailerResponse(movieId!!)
         binding.backButton.setOnClickListener {
+            DynatraceOpenKitManager.reportEvent("Botão Voltar Clicado")
             finish()
         }
-
 
         mainViewModel.movieDetailLivedata.observe(this@MovieDetails, Observer { response ->
             progressBar?.hide()

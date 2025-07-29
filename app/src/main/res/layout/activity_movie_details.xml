@@ -132,6 +132,22 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
 
+                <Button
+                    android:id="@+id/sendEventBtn"
+                    android:layout_width="55dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:insetRight="6dp"
+                    android:text="event" />
+
+                <Button
+                    android:id="@+id/testCrashBtn"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:insetRight="6dp"
+                    android:text="crash" />
+
 
             </LinearLayout>
 

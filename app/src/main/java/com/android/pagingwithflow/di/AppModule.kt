@@ -18,6 +18,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+import com.android.pagingwithflow.integration.dynatrace.DynatraceOpenKitManager
+
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
@@ -62,6 +64,9 @@ object AppModule {
 
         @Provides
         fun provideRetrofitClient(okHttpClient: OkHttpClient, baseUrl: String, converterFactory: Converter.Factory): Retrofit {
+
+//            DynatraceOpenKitManager.tracerWebReq(baseUrl)
+
             return Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .client(okHttpClient)
