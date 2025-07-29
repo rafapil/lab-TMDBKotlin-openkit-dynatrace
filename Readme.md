@@ -12,7 +12,7 @@
 | Movie Details | APK | Demo Video |
 | ![4](screenshots/ss4.jpg?raw=true) | [APK](screenshots/app_movie.apk) | [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/AE9xLklir_I/0.jpg)](https://www.youtube.com/watch?v=AE9xLklir_I)|
 
-## 🌟 Features
+## Features
 *   Slider of Upcoming Movies
 *   User can view and play trailers on youtube
 *   Shows a list of Discover movies, Genre, popular & toprated Movies
@@ -21,12 +21,16 @@
 *   Pagination and endless scrolling using Android paging library (for Discover Movies)
 *   Material design 3
 
-## 🚀 Our Goal
+## Integrated OpenKit Dynatrace
+*   Integration with Dynatrace OpenKit
+
+## Our Goal
 Create such application to learn and implement android's new features & framework.
 
 ### Prerequisites
 *   Android Studio Flamingo | 2022.2.1 Patch 1
 *   Java JDK 17 or 11
+*   Dynatrace env and beconUrl/token cumtom app
 ## Setup
 
 #### The Movie Database API
@@ -50,3 +54,4 @@ Create such application to learn and implement android's new features & framewor
 *   [OkHttp](https://github.com/square/okhttp)
 *   [Kotlin Flow](https://developer.android.com/kotlin/flow)
 *   [Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
+*   [OpenKit](https://mvnrepository.com/artifact/com.dynatrace.openkit/openkit-java/3.3.0)
