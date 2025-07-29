@@ -19,9 +19,21 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+
+            storeFile = file("caminho/para/sua/keystore.jks")
+            storePassword = System.getenv("KEYSTORE_PASSWORD")
+            keyAlias = System.getenv("KEY_ALIAS")
+            keyPassword = System.getenv("KEY_PASSWORD")
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+//            minifyEnabled false
+            isMinifyEnabled = true
+            isShrinkingEnabled = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -95,7 +107,10 @@ dependencies {
 
     //coil
     implementation("io.coil-kt:coil:2.3.0")
-    implementation 'com.github.smarteist:autoimageslider:1.4.0'
+    implementation 'com.github.smarteist:Android-Image-Slider:1.4.0'
+
+    // implements Dynatrace openkit
+    implementation("com.dynatrace.openkit:openkit-java:3.3.0")
 
 }
 kapt { correctErrorTypes true }
