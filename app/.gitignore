@@ -1,3 +1,4 @@
 /build
 NetworkingConstants.kt
-NetworkingConstants
+NetworkingConstants.*
+gradle.properties
